@@ -6,7 +6,7 @@
 trigger:
 - master
 stages:
-- stage: Build
+- stage: Build and Unit Tests
   jobs:
   - job: Build
 
@@ -70,5 +70,5 @@ stages:
         azureSubscription: 'Azure for Students(92a0a0b6-7a6a-4889-a268-e9e268ec1b9a)'
         appType: 'webApp'
         appName: 'Ahorcado-Tigre'
-        package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        package: '$(System.ArtifactsDirectory)/drop/*.zip'
         deploymentMethod: 'auto'
