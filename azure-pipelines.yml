@@ -6,7 +6,7 @@
 trigger:
 - master
 stages:
-- stage: Build and Unit Tests
+- stage: Build_&_Unit_Tests
   jobs:
   - job: Build
 
