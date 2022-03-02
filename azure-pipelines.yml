@@ -57,6 +57,7 @@ stages:
     - task: NuGetCommand@2
       inputs:
         restoreSolution: '$(solution)'
+        nugetConfigPath: '**/Ahorcado.MVC/packages.config'
 
     - task: VSBuild@1
       inputs:
