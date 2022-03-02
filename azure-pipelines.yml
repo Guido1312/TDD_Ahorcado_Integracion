@@ -47,7 +47,8 @@ stages:
       vmImage: 'windows-latest'
 
     variables:
-      solution: '**/Ahorcado.MVC.csproj'
+      solution: '**/*.sln'
+      project: '**/Ahorcado.MVC.csproj'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
 
@@ -57,11 +58,10 @@ stages:
     - task: NuGetCommand@2
       inputs:
         restoreSolution: '$(solution)'
-        nugetConfigPath: '**/Ahorcado.MVC/packages.config'
 
     - task: VSBuild@1
       inputs:
-        solution: '$(solution)'
+        solution: '$(project)'
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
