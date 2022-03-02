@@ -15,6 +15,7 @@ stages:
 
     variables:
       solution: '**/*.sln'
+      deployProject: '**/Ahorcado.MVC.csproj'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
 
@@ -37,6 +38,18 @@ stages:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
         codeCoverageEnabled: true
+      
+    - task: VSBuild@1
+      inputs:
+        solution: '$(deployProject)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
 
 - stage: Deploy
@@ -46,25 +59,14 @@ stages:
     pool:
       vmImage: 'windows-latest'
 
-    variables:
-      solution: '**/*.sln'
-      project: '**/Ahorcado.MVC.csproj'
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Release'
-
     steps:
-    - task: NuGetToolInstaller@1
-
-    - task: NuGetCommand@2
+    - task: DownloadBuildArtifacts@1
       inputs:
-        restoreSolution: '$(solution)'
+        buildType: 'current'
+        downloadType: 'single'
+        downloadPath: '$(System.ArtifactsDirectory)'
+        artifactName: 'drop'
 
-    - task: VSBuild@1
-      inputs:
-        solution: '$(project)'
-        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
     - task: AzureWebApp@1
       inputs:
         azureSubscription: 'Azure for Students(92a0a0b6-7a6a-4889-a268-e9e268ec1b9a)'
