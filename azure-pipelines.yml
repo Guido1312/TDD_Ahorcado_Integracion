@@ -45,6 +45,7 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
@@ -73,4 +74,7 @@ stages:
         azureSubscription: 'Azure for Students(92a0a0b6-7a6a-4889-a268-e9e268ec1b9a)'
         appType: 'webApp'
         WebAppName: 'Ahorcado-Tigre'
+        deployToSlotOrASE: true
+        ResourceGroupName: 'Agiles'
+        SlotName: 'production'
         packageForLinux: '$(System.ArtifactsDirectory)/drop/*.zip'
