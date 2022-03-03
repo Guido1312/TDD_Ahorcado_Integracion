@@ -17,10 +17,10 @@ namespace BibliotecaClases
         public List<char> letrasErradas;
         public Juego()
         {
-            this.palabraSecreta = "casa";
+            this.palabraSecreta = "xcvxcvmnl";
             this.estadoPalabra = "____";
             this.estadoAux = estadoPalabra.ToCharArray();
-            this.intentosRestantes = 5;
+            this.intentosRestantes = 1;
             this.letrasErradas = new List<char>();
         }
 
@@ -33,7 +33,7 @@ namespace BibliotecaClases
                 this.estadoPalabra += "_";
             }
             this.estadoAux = estadoPalabra.ToCharArray();
-            this.intentosRestantes = 6;
+            this.intentosRestantes = 1;
             this.letrasErradas = new List<char>();
         }
 
