@@ -102,4 +102,3 @@ stages:
         testSelector: 'testAssemblies'
         testAssemblyVer2: '**\bin\Release\Ahorcado.UIAutomation.dll'
         searchFolder: '$(System.DefaultWorkingDirectory)'
-        codeCoverageEnabled: true
