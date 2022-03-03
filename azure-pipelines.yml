@@ -21,3 +21,5 @@ stages:
         scannerMode: 'MSBuild'
         projectKey: 'guidolorenzotti_Ahorcado-Agiles'
         projectName: 'Ahorcado-Agiles'
+    
+    - task: SonarCloudAnalyze@1
