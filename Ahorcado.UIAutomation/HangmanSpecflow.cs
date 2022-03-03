@@ -26,7 +26,7 @@ namespace Ahorcado.UIAutomation
             driver  = new ChromeDriver(path, options);           
             driver = new ChromeDriver(path);
             */
-            baseURL = "https://ahorcadomvc20220228171704.azurewebsites.net/";
+            baseURL = "http://ahrocado-tigre.azurewebsites.net/";
         }
 
         //Primer test - perder el juego

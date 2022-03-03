@@ -51,7 +51,7 @@ namespace BibliotecaClases
 
         public string setName(string nombre)
         {
-            if (nombre == "" || nombre.Length > 20 || !nombre.All(char.IsLetterOrDigit)) //aun no hicimos nada de pantalla de nombre, y si no hacemos raking es al pedo
+            if (nombre == "" || nombre.Length > 20 || !nombre.All(char.IsLetterOrDigit))
             {
                 return "Nombre invalido";
             }
@@ -61,7 +61,6 @@ namespace BibliotecaClases
                 return "Nombre valido";
             }
         }
-        // en el trello tenemos el tema de puntuacion tambien relacionada al nombre no se que vamos a hacer con eso
 
         public string arriesgarPalabra(string palabra)
         {
