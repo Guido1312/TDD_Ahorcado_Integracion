@@ -15,7 +15,6 @@ stages:
 
     variables:
       solution: '**/*.sln'
-      deployProject: '**/Ahorcado.MVC.csproj'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
 
@@ -32,30 +31,17 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-        
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'solution'
-        publishLocation: 'Container'
 
     - task: VSTest@2
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
         codeCoverageEnabled: true
-      
-    - task: VSBuild@1
-      inputs:
-        solution: '$(deployProject)'
-        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
 
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
+        ArtifactName: 'solution'
         publishLocation: 'Container'
 
 
@@ -93,16 +79,23 @@ stages:
       vmImage: 'windows-latest'
 
     variables:
+      buildProject: '**\Ahorcado.UIAutomation.csproj'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
 
     steps:
-    - task: DownloadBuildArtifacts@1
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
       inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        downloadPath: '$(System.ArtifactsDirectory)'
-        artifactName: 'solution'
+        restoreSolution: '$(solution)'
+
+    - task: VSBuild@1
+      inputs:
+        solution: '$(buildProject)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
 
     - task: VSTest@2
       inputs:
