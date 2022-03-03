@@ -103,25 +103,3 @@ stages:
         testAssemblyVer2: '**\Release\Ahorcado.UIAutomation.dll'
         searchFolder: '$(System.DefaultWorkingDirectory)'
         codeCoverageEnabled: true
-
-- stage: SonarCloud
-  jobs:
-  - job: SonarCloud
-
-    pool:
-      vmImage: 'windows-latest'
-
-    variables:
-      solution: '**/*.sln'
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Release'
-
-    steps:
-
-    - task: SonarCloudPrepare@1
-      inputs:
-        SonarCloud: 'sonarcloudahorcado'
-        organization: 'guidolorenzotti'
-        scannerMode: 'MSBuild'
-        projectKey: 'guidolorenzotti_Ahorcado-Agiles'
-        projectName: 'Ahorcado-Agiles'
