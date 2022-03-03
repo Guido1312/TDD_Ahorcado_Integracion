@@ -6,71 +6,6 @@
 trigger:
 - master
 stages:  
-- stage: Build_and_UT
-  jobs:
-  - job: Build
-
-    pool:
-      vmImage: 'windows-latest'
-
-    variables:
-      solution: '**/*.sln'
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Release'
-
-    steps:
-    - task: NuGetToolInstaller@1
-
-    - task: NuGetCommand@2
-      inputs:
-        restoreSolution: '$(solution)'
-
-    - task: VSBuild@1
-      inputs:
-        solution: '$(solution)'
-        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-
-    - task: VSTest@2
-      inputs:
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        codeCoverageEnabled: true
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
-
-
-- stage: Deploy
-  jobs:
-  - job: Deploy
-
-    pool:
-      vmImage: 'windows-latest'
-
-    steps:
-    - task: DownloadBuildArtifacts@1
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        downloadPath: '$(System.ArtifactsDirectory)'
-        artifactName: 'drop'
-
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Azure for Students(92a0a0b6-7a6a-4889-a268-e9e268ec1b9a)'
-        appType: 'webApp'
-        WebAppName: 'Ahrocado-Tigre'
-        deployToSlotOrASE: true
-        ResourceGroupName: 'TigresAgiles'
-        SlotName: 'production'
-        packageForLinux: '$(System.ArtifactsDirectory)/drop/*.zip'           
-
 - stage: AT
   jobs:
   - job: AT
@@ -100,6 +35,6 @@ stages:
     - task: VSTest@2
       inputs:
         testSelector: 'testAssemblies'
-        testAssemblyVer2: '**\Release\Ahorcado.UIAutomation.dll'
+        testAssemblyVer2: '**\bin\Release\Ahorcado.UIAutomation.dll'
         searchFolder: '$(System.DefaultWorkingDirectory)'
         codeCoverageEnabled: true
