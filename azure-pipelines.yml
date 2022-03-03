@@ -32,6 +32,12 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+        
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'solution'
+        publishLocation: 'Container'
 
     - task: VSTest@2
       inputs:
@@ -78,3 +84,29 @@ stages:
         ResourceGroupName: 'TigresAgiles'
         SlotName: 'production'
         packageForLinux: '$(System.ArtifactsDirectory)/drop/*.zip'
+        
+- stage: AT
+  jobs:
+  - job: AT
+
+    pool:
+      vmImage: 'windows-latest'
+
+    variables:
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+
+    steps:
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        downloadPath: '$(System.ArtifactsDirectory)'
+        artifactName: 'solution'
+
+    - task: VSTest@2
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: '**\Ahorcado.UIAutomation.dll'
+        searchFolder: '$(System.ArtifactsDirectory)/solution/*.zip'
+        codeCoverageEnabled: true
