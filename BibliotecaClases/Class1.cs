@@ -17,7 +17,7 @@ namespace BibliotecaClases
         public List<char> letrasErradas;
         public Juego()
         {
-            this.palabraSecreta = "hola";
+            this.palabraSecreta = "casa";
             this.estadoPalabra = "____";
             this.estadoAux = estadoPalabra.ToCharArray();
             this.intentosRestantes = 5;
